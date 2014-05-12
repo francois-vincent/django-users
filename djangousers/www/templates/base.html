@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    {% block head_meta %}{% endblock %}
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <title>
+        {% block head_title %}'Django Users'{% endblock %}
+    </title>
+
+    {% block head_css %}{% endblock %}
+    {% block head_js %}{% endblock %}
+    {% block head_inline_js %}{% endblock %}
+</head>
+<body>
+<div id="all">
+    {% block body_nav %}{% endblock %}
+    {% block body_message %}{% endblock %}
+    {% block body_header %}{% endblock %}
+    {% block body_content %}{% endblock %}
+    {% block body_footer %}{% endblock %}
+
+    {% block body_login %}{% endblock %}
+    {% block bottom_js %}{% endblock %}
+</div>
+</body>
+</html>

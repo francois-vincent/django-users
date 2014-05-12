@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n staticfiles %}
+
+{% block head_meta %}
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+{% endblock %}
+
+{% block head_css %}
+<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block head_js %}
+<script src="{% static 'js/jquery.tools.min.js' %}"></script>
+{% endblock %}
+
+{% block head_inline_js %}
+<script>
+var timeout     = 500;
+var closetimer	= 0;
+var dropdown    = [];
+var ddmmenuitem = [];
+
+function jsddm_open() {
+    jsddm_canceltimer();
+    jsddm_close();
+    dropdown = $(this).children('ul').eq(0).css('visibility', 'visible');
+    console.log(dropdown.length)
+    if (dropdown.length)
+        ddmmenuitem = $(this).find('a').eq(0).addClass('selected');
+}
+
+function jsddm_close() {
+    if (dropdown.length) dropdown.css('visibility', 'hidden');
+    dropdown = [];
+    if (ddmmenuitem.length) ddmmenuitem.removeClass('selected');
+}
+
+function jsddm_timer() {
+    closetimer = window.setTimeout(jsddm_close, timeout);
+}
+
+function jsddm_canceltimer() {
+    if(closetimer) {
+        window.clearTimeout(closetimer);
+        closetimer = null;
+    }}
+
+$(function() {
+    $('#jsddm > li').bind('mouseover', jsddm_open).bind('mouseout',  jsddm_timer);
+});
+
+document.onclick = jsddm_close;
+
+$(function() {
+    var modals = $("a[rel]").overlay({
+        mask: {
+            color: '#ebecff',
+            loadSpeed: 200
+        },
+        closeOnClick: false,
+        load: {{ autologin|default:0 }}
+    });
+    $("#login form").submit(function(e) {
+        modals.eq(0).overlay().close();
+    });
+    $(".alert").delay(5000).slideUp(400);
+    $('.jsddm > li').bind('mouseover', jsddm_open);
+    $('.jsddm > li').bind('mouseout',  jsddm_timer);
+    document.onclick = jsddm_close;
+});
+</script>
+{% endblock %}
+
+{% block body_nav %}
+<div id="site-header">
+    <a href="{% url 'home' %}"><img src="{% static 'img/SmallBeetle.jpg' %}"><h1>Scarabée</h1></a>
+    <ul id="jsddm">
+        <li class="home"><a href="{% url 'home' %}" {% if request.path|length < 2 %}class="active"{% endif %}>Home</a></li>
+        <li><a href="{% url 'common:page1' %}" {% if 'page1' in request.path %}class="active"{% endif %}>Page 1</a></li>
+        <li><a href="{% url 'common:page2' %}" {% if 'page2' in request.path %}class="active"{% endif %}>Page 2</a></li>
+        <li><a href="{% url 'common:page3' %}" {% if 'page3' in request.path %}class="active"{% endif %}>Page 3</a></li>
+        <li><a href="{% url 'common:page4' %}" {% if 'page4' in request.path %}class="active"{% endif %}>Page 4</a></li>
+        <li><a href="{% url 'common:page5' %}" {% if 'page5' in request.path %}class="active"{% endif %}>Page 5</a></li>
+        {% if user.is_authenticated %}
+        <li class="right"><a href="#" style="text-transform: capitalize;">{% trans 'Welcome' %}&nbsp;{% firstof user.first_name user.username %}</a>
+        <ul>
+            <li><a href="{% url 'users:logout' %}">{% trans 'Logout' %}</a></li>
+            <li><a href="{% url 'users:edit_account' %}">{% trans 'Edit User infos' %}</a></li>
+            <li><a href="{% url 'users:change_password' %}">{% trans 'Change Password' %}</a></li>
+        </ul>
+        </li>
+        {% else %}
+        <li class="right"><a rel="#login" href="#">{% trans 'Login' %}</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="clear"></div>
+{% endblock %}
+
+{% block body_login %}
+<div class="modal" id="login">
+    <h2>{% trans 'Login' %}</h2>
+    <p>{% trans 'Please enter your credentials.' %}</p>
+    {% include 'users/login_form.html' %}
+</div>
+{% endblock %}
+
+{% block body_message %}
+    {% include 'messages.html' %}
+{% endblock %}

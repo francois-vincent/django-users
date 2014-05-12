@@ -1,0 +1,21 @@
+{% load i18n utils %}
+<form action="{% url 'users:login' %}" method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td class="label">{% trans 'Username' %}:</td>
+            <td><input id="username" name="username" type="text" placeholder="{% trans 'username' %}"/></td>
+        </tr>
+        <tr>
+            <td class="label">{% trans 'Password' %}:</td>
+            <td><input id="password" name="password" type="password" placeholder="{% trans 'password' %}"/></td>
+        </tr>
+    </table>
+    <p class="actions">
+        <button type="submit">{% trans 'Login' %}</button>
+        <button type="button" class="close">{% trans 'Cancel' %}</button>
+        {% if USERS_CAN_CREATE_USER %}
+        <a href="{% url 'users:create_account' %}">{% trans 'Click here to create an account' %}</a>
+        {% endif %}
+    </p>
+</form>

@@ -1,0 +1,8 @@
+
+modifier auth.user pour logger toutes les modifs (signals ?)
+customiser l'admin pour filtrer les logs user sur user, date début et fin, type de modif
+
+faire des tests unitaires
+en faire une app
+
+faire le manifest etc...

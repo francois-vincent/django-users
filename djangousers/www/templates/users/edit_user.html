@@ -1,0 +1,40 @@
+{% extends "common_layout.html" %}
+{% load i18n %}
+
+{% block body_header %}
+<h3 style="text-align: center; margin-top: 40px">{% trans 'Please edit your informations' %}</h3>
+{% endblock %}
+
+{% block body_content %}
+<div class="well">
+    <form action="#" method="post" autocomplete="off">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td class="label">{% trans 'Username' %}*:</td>
+                <td class="input">{{ form.username }}</td>
+                <td>{{ form.errors.username }}</td>
+            </tr>
+            <tr>
+                <td class="label">{% trans 'First name' %}:</td>
+                <td class="input">{{ form.first_name }}</td>
+                <td>{{ form.errors.first_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">{% trans 'Last name' %}:</td>
+                <td class="input">{{ form.last_name }}</td>
+                <td>{{ form.errors.last_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">{% trans 'Email' %}*:</td>
+                <td class="input">{{ form.email }}</td>
+                <td>{{ form.errors.email }}</td>
+            </tr>
+        </table>
+        <p class="actions">
+            <button type="submit">{% trans 'Submit' %}</button>
+            <button type="button" onclick="window.location.href='{{ LAST_TRUE_PAGE }}';">{% trans 'Cancel' %}</button>
+        </p>
+    </form>
+</div>
+{% endblock %}

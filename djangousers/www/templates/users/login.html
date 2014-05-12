@@ -1,0 +1,15 @@
+{% extends "common_layout.html" %}
+{% load i18n %}
+
+{% block body_login %}
+<div class="modal" id="login">
+    <h2>{% trans 'Login Required' %}</h2>
+    <p>{% trans 'This page has restricted access rights.' %}</p>
+    <p>{% trans 'Please enter your credentials.' %}</p>
+    {% include 'messages.html' %}
+    {% include 'users/login_form.html' %}
+</div>
+{% endblock %}
+
+{% block body_message %}
+{% endblock %}
